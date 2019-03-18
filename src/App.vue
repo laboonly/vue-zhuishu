@@ -1,7 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <mt-header title="标题过长会隐藏后面的内容啊哈哈哈哈">
+      <router-link to="/" slot="left">
+        <mt-button icon="back">返回</mt-button>
+      </router-link>
+      <mt-button icon="more" slot="right"></mt-button>
+    </mt-header>
+    <mt-tabbar v-model="selected">
+    <mt-tab-item id="外卖">
+      外卖
+    </mt-tab-item>
+    <mt-tab-item id="订单">
+      订单
+    </mt-tab-item>
+    <mt-tab-item id="发现">
+      发现
+    </mt-tab-item>
+    <mt-tab-item id="我的">
+      我的
+    </mt-tab-item>
+  </mt-tabbar>
   </div>
 </template>
 
@@ -10,14 +28,3 @@ export default {
   name: 'App'
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
