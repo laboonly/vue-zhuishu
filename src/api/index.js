@@ -1,9 +1,14 @@
 import request from '@/utils/request'
 
+export function getcategories () {
+  return request({
+    url: 'categories',
+    method: 'get'
+  })
+}
 export function getclass (data) {
   return request({
-    url: '/user/admin',
-    method: 'post',
-    data
+    url: 'category-info' + '?gender=male&type=hot&major=' + data + '&minor=&start=0&limit=20',
+    method: 'get'
   })
 }

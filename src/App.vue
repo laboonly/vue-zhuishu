@@ -8,7 +8,7 @@
     </mt-header>
     <router-view></router-view>
     <!--footer -->
-    <mt-tabbar v-model="selected">
+    <mt-tabbar >
       <mt-tab-item>
         <router-link to="/home">
           <mt-button>首页</mt-button>
