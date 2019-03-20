@@ -1,16 +1,17 @@
 <template>
-  <div class="class">
-    <h2>男生:</h2>
-    <div class="class-male">
-      <mt-button class="class-button" v-for="item in categories.male" :key="item.name" @click="Getclass(item.name)" type="default">{{ item.name }}({{ item.bookCount}})</mt-button>
-    </div>
+  <div class="class-conetent">
+    <classlist :classlist="categories"></classlist>
   </div>
 </template>
 
 <script>
-import { getcategories, getclass } from '@/api/index'
+import classlist from '@/components/class-list'
+import { getcategories } from '@/api/index'
 
 export default {
+  components: {
+    classlist
+  },
   data () {
     return {
       categories: []
@@ -22,19 +23,32 @@ export default {
   methods: {
     Getcategories () {
       getcategories().then(response => {
-        this.categories = response
-      })
-    },
-    Getclass (major) {
-      // let data = {
-      //   major: major,
-      //   gender: 'male',
-      //   type: 'hot',
-      //   start: 0,
-      //   limit: 20
-      // }
-      getclass(major).then(response => {
         console.log(response)
+        for (let [key, value] of Object.entries(response)) { // Object.entries方法返回一个数组
+          let obj = null
+          if (key === 'male') {
+            obj = {
+              title: '男生',
+              gender: 'male',
+              catList: value
+            }
+          } else if (key === 'female') {
+            obj = {
+              title: '女生',
+              gender: 'female',
+              catList: value
+            }
+          } else if (key === 'press') {
+            obj = {
+              title: '出版',
+              gender: 'press',
+              catList: value
+            }
+          }
+          if (obj !== null) {
+            this.categories.push(obj)
+          }
+        }
       })
     }
   }
@@ -42,12 +56,16 @@ export default {
 </script>
 
 <style lang="less">
+.class-conetent{
+  position: relative;
+  height: 100%;
+  overflow: scroll;
+   padding: 0 5px;
   .class-male {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+
     .class-button {
       margin-top: 20px;
     }
   }
+}
 </style>

@@ -6,7 +6,9 @@
         <mt-button icon="back">返回</mt-button>
       </router-link>
     </mt-header>
-    <router-view></router-view>
+    <div class="vue-content">
+      <router-view></router-view>
+    </div>
     <!--footer -->
     <mt-tabbar >
       <mt-tab-item>
@@ -38,3 +40,14 @@ export default {
   name: 'App'
 }
 </script>
+
+<style lang="less">
+  body {
+    margin: 0;
+  }
+  .vue-content {
+    height: 100%;
+    overflow: scroll;
+    position: fixed;
+  }
+</style>
