@@ -20,3 +20,17 @@ export function getBookRelated (id) {
     method: 'get'
   })
 }
+
+// export function getcomment (bookid, sort, type, start, limit) {
+//   return request({
+//     url: 'book/discussions' + `?book=${bookid}&type=${type}&sort=${sort}}&start=${start}&limit=${limit}`,
+//     method: 'get'
+//   })
+// }
+
+export function getcomment (bookid) {
+  return request({
+    url: 'book/discussions' + `?book=${bookid}`,
+    method: 'get'
+  })
+}

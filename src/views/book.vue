@@ -13,20 +13,64 @@
                 <button class="read-button">立即阅读</button>
             </div>
         </div>
+        <div class="book-content-two border-gery">
+            <div class="two-p">
+                <p class="color-gery">追人气</p>
+                <p>{{ this.bookrelated.latelyFollower }}</p>
+            </div>
+            <div class="two-p">
+                <p class="color-gery">读者留存率</p>
+                <p>{{ this.bookrelated.retentionRatio }}%</p>
+            </div>
+            <div class="two-p">
+                <p class="color-gery">日更新字数/天</p>
+                <p>{{ this.bookrelated.serializeWordCount }}</p>
+            </div>
+        </div>
+        <div class="book-content-intro border-gery">
+            <p>{{ this.bookrelated.longIntro }}</p>
+        </div>
+        <div class="book-last-chapter">
+            <p class="color-gery">目录</p>
+            <p class="color-gery">{{ this.bookrelated.updated }}</p>
+            <p class="color-gery">{{ this.bookrelated.lastChapter }}</p>
+        </div>
+        <div class="book-content-comments">
+            <h2>热门评论</h2>
+            <div class="comments-content" v-for="(index, item) in this.comments.posts" :key="index">
+                <div class="comments-card">
+                    <img :src="'http://statics.zhuishushenqi.com'+ item.author.avatar">
+                    <div class="comments-card-p">
+                        <div class="card-p1">
+                            <p>{{ item.authornickname }}</p>
+                            <p>{{ item.updated }}</p>
+                        </div>
+                        <p>{{ item.title }}</p>
+                        <p>{{ item.content }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import { getBookRelated } from '@/api/index'
+import { getBookRelated, getcomment } from '@/api/index'
 export default {
   data () {
     return {
       bookid: this.$route.params.bookid,
-      bookrelated: {}
+      bookrelated: {},
+      comments: {},
+      sort: 'updated',
+      type: 'normal',
+      start: '21',
+      limit: '20'
     }
   },
   created () {
     this.GetBookRelated(this.bookid)
+    this.Getcomment(this.bookid)
   },
   methods: {
     GetBookRelated (bookid) {
@@ -34,14 +78,27 @@ export default {
         this.bookrelated = response
         console.log(response)
       })
+    },
+    Getcomment (bookid) {
+      getcomment(bookid).then(response => {
+        this.comments = response
+        console.log(this.comments)
+      })
     }
   }
 }
 </script>
 
 <style lang="less">
+    p {
+        margin: 0;
+    }
+    .color-gery {
+        color: #8f8f94;
+    }
     .book-content {
         width: 100%;
+        font-size: 14px;
         .border-gery {
             &:after {
                 position: absolute;
@@ -101,6 +158,32 @@ export default {
                 color: #fff;
                 background-color: #00c98c;
             }
+        }
+        .book-content-two {
+            display: flex;
+            justify-content: space-around;
+            font-size: 14px;
+            text-align: center;
+            padding: 10px 10px 10px 10px;
+            position: relative;
+        }
+        .book-content-intro {
+            position: relative;
+            height: 59px;
+            p {
+                height: 59px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            padding: 10px 10px 10px 10px;
+        }
+        .book-last-chapter {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 10px 10px 10px;
+            position: relative;
+            font-size: 12px;
         }
     }
 </style>
