@@ -34,6 +34,11 @@ export default new Router({
       path: '/clylist/:major:gender',
       name: 'clylist',
       component: () => import('@/views/clylist')
+    },
+    {
+      path: '/book',
+      name: 'book',
+      component: () => import('@/views/book')
     }
   ]
 })

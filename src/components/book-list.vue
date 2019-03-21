@@ -1,6 +1,7 @@
 <template>
     <div class="book-list-content">
-        <div class="book-list-card" v-for="item in booklist.books" :key="item.id">
+        <router-link :to="{ name: 'book', params:{ bookid: item._id }}" class="book-list-card" v-for="item in booklist.books" :key="item.id">
+
             <img :src="'http://statics.zhuishushenqi.com'+ item.cover"/>
             <div class="booklist-p">
                 <span class="title">{{ item.title}}</span>
@@ -15,7 +16,7 @@
                 <mt-badge size="normal">10</mt-badge>
                 <mt-badge size="normal">10</mt-badge>
             </div> -->
-        </div>
+        </router-link>
     </div>
 </template>
 
@@ -29,6 +30,9 @@ export default {
 </script>
 
 <style lang="less">
+    a {
+        text-decoration: none;
+    }
     .book-list-card {
         padding: 11px 15px;
         display: flex;
