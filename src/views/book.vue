@@ -30,23 +30,23 @@
         <div class="book-content-intro border-gery">
             <p>{{ this.bookrelated.longIntro }}</p>
         </div>
-        <div class="book-last-chapter">
+        <div class="book-last-chapter border-gery">
             <p class="color-gery">目录</p>
             <p class="color-gery">{{ this.bookrelated.updated }}</p>
             <p class="color-gery">{{ this.bookrelated.lastChapter }}</p>
         </div>
         <div class="book-content-comments">
             <h2>热门评论</h2>
-            <div class="comments-content" v-for="(index, item) in this.comments.posts" :key="index">
-                <div class="comments-card">
+            <div class="comments-content " >
+                <div class="comments-card border-gery" v-for="item in this.comments" :key="item.id">
                     <img :src="'http://statics.zhuishushenqi.com'+ item.author.avatar">
                     <div class="comments-card-p">
                         <div class="card-p1">
-                            <p>{{ item.authornickname }}</p>
+                            <p class="color-gery">{{ item.author.nickname }}</p>
                             <p>{{ item.updated }}</p>
                         </div>
                         <p>{{ item.title }}</p>
-                        <p>{{ item.content }}</p>
+                        <p class="color-gery">{{ item.content }}</p>
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@ export default {
     return {
       bookid: this.$route.params.bookid,
       bookrelated: {},
-      comments: {},
+      comments: [],
       sort: 'updated',
       type: 'normal',
       start: '21',
@@ -81,8 +81,9 @@ export default {
     },
     Getcomment (bookid) {
       getcomment(bookid).then(response => {
-        this.comments = response
+        this.comments = response.posts
         console.log(this.comments)
+        console.log(response.posts)
       })
     }
   }
@@ -184,6 +185,38 @@ export default {
             padding: 10px 10px 10px 10px;
             position: relative;
             font-size: 12px;
+        }
+        .book-content-comments {
+            padding: 11px 15px;
+
+            h2 {
+                font-size: 14px;
+                margin: 0;
+                padding-bottom: 11px;
+            }
+            .comments-content {
+                position: relative;
+                max-height: 400px;
+                overflow-y: auto;
+                .comments-card {
+                    display: flex;
+                    position: relative;
+                    font-size: 12px;
+                    padding: 11px 0;
+                    img {
+                        width: 42px;
+                        height: 42px;
+                        margin-right: 10px;
+                    }
+                    .comments-card-p {
+                        width: 100%;
+                    }
+                    .card-p1 {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
         }
     }
 </style>

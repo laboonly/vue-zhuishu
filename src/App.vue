@@ -32,6 +32,7 @@
         </router-link>
       </mt-tab-item>
     </mt-tabbar>
+
   </div>
 </template>
 
@@ -45,10 +46,13 @@ export default {
   body {
     margin: 0;
   }
-  .vue-content {
-    width: 100%;
+  #app {
+    position: relative;
     height: 100%;
-    overflow: scroll;
-    position: fixed;
+  }
+  .vue-content {
+    position: relative;
+    overflow-y: scroll;
+     height: 100%;
   }
 </style>
