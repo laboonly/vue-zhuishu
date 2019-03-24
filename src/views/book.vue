@@ -51,11 +51,23 @@
                 </div>
             </div>
         </div>
+        <div class="recommend">
+            <div class="recommend-title">
+                <h2>同类推荐</h2>
+                <p>更多</p>
+            </div>
+            <div class="recommend-content">
+                <div class="recommend-card" v-for="item in this.commend" :key="item._id">
+                    <img :src="'http://statics.zhuishushenqi.com' + item.cover" />
+                    <p>{{ item.title }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import { getBookRelated, getcomment } from '@/api/index'
+import { getBookRelated, getcomment, getreCommend } from '@/api/index'
 export default {
   data () {
     return {
@@ -65,12 +77,14 @@ export default {
       sort: 'updated',
       type: 'normal',
       start: '21',
-      limit: '20'
+      limit: '20',
+      commend: ''
     }
   },
   created () {
     this.GetBookRelated(this.bookid)
     this.Getcomment(this.bookid)
+    this.GetreCommend(this.bookid)
   },
   methods: {
     GetBookRelated (bookid) {
@@ -85,6 +99,12 @@ export default {
         console.log(this.comments)
         console.log(response.posts)
       })
+    },
+    GetreCommend (bookid) {
+      getreCommend(bookid).then(response => {
+        this.commend = response.books
+        console.log(response)
+      })
     }
   }
 }
@@ -93,6 +113,7 @@ export default {
 <style lang="less">
     p {
         margin: 0;
+        word-break: break-word;
     }
     .color-gery {
         color: #8f8f94;
@@ -214,6 +235,36 @@ export default {
                     .card-p1 {
                         display: flex;
                         justify-content: space-between;
+                    }
+                }
+            }
+        }
+        .recommend {
+            position: relative;
+            width: 100%;
+            .recommend-title {
+                display: flex;
+                justify-content: space-around;
+                h2 {
+                    font-size: 14px;
+                    margin: 0;
+                    padding-bottom: 11px;
+                }
+                p {
+
+                }
+            }
+            .recommend-content {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                text-align: center;
+                .recommend-card {
+                    margin-top: 10px;
+                    margin-left: 14px;
+                    img {
+                        width: 80px;
+                        height: auto;
                     }
                 }
             }

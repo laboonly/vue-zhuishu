@@ -3,7 +3,7 @@
     <!--header -->
     <mt-header title="Vue-Book">
       <router-link to="/" slot="left">
-        <mt-button icon="back">返回</mt-button>
+        <mt-button @click="getback" icon="back">返回</mt-button>
       </router-link>
     </mt-header>
     <div class="vue-content">
@@ -38,7 +38,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    getback () {
+      this.$router.go(-1)
+    }
+  }
 }
 </script>
 
@@ -46,13 +51,11 @@ export default {
   body {
     margin: 0;
   }
-  #app {
-    position: relative;
+  .vue-content {
+    margin-bottom: 52px;
     height: 100%;
   }
-  .vue-content {
-    position: relative;
-    overflow-y: scroll;
-     height: 100%;
+  .mint-tabbar  {
+    position: fixed;
   }
 </style>
