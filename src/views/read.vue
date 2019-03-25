@@ -1,27 +1,53 @@
 <template>
-    <div class="read-content" @click="popupVisible = !popupVisible">
-        <!-- <mt-popup
-            v-model="popupVisible"
-            popup-transition="popup-fade">
-            <div>
-                <p>111111</p>
+    <div class="read-content" @click="getshow" >
+
+      <div class="readheader" v-if="datashow">
+         <span @click="getback" class="mui-icon mui-icon-arrowleft read-span"></span>
+         <p>圣墟</p>
+         <p class="switch" @click="switchbook">换源</p>
+      </div>
+      <div class="readbottom" v-if="datashow">
+        <div class="bottom-content">
+          <div class="colors" style="background-color: rgb(196, 179, 149);">
+          </div>
+          <div class="colors" style="background-color: rgb(195, 212, 230);">
+          </div>
+          <div class="colors" style="background-color: rgb(200, 232, 200);">
+          </div>
+          <div class="colors" style="background-color: rgb(248, 201, 201);">
+          </div>
+          <div class="colors" style="background-color: rgb(62, 67, 73);">
+          </div>
+        </div>
+        <div class="bottom-content1">
+          <mt-button size="small">A+</mt-button>
+          <mt-button size="small" @click="switchbook">换源</mt-button>
+          <mt-button size="small">A-</mt-button>
+        </div>
+        <div class="bottom-content2">
+          <mt-button size="small">上一章</mt-button>
+          <mt-button size="small">目录</mt-button>
+          <mt-button size="small">下一章</mt-button>
+        </div>
+      </div>
+      <div class="switch-content" v-show="datahy" @click="switchbook">
+        <div class="switch-content-center">
+            <div class="sy-list" @click="Getsource( item._id )" v-for=" item in this.sy_list" :key="item._id">
+              <p>{{ item.name }}</p>
+              <p>最后更新{{ item.lastChapter }}</p>
             </div>
-        </mt-popup> -->
-        <!-- <mt-popup
-            v-model="popupVisible"
-            position="top">
-            <div>
-                 <button >换源</button>
-            </div>
-        </mt-popup> -->
-        <mt-popup
-            v-model="popupVisible"
-            position="bottom"
-            modal="false">
-            <div>
-                <p>下</p>
-            </div>
-        </mt-popup>
+        </div>
+      </div>
+      <div class="read-body">
+          <h1>{{contitle}}</h1>
+          <div  v-for="(item,i) in con.cpContent" :key="i">
+            <p v-html="item"></p>
+          </div>
+          <div class="t-page">
+            <mt-button size="small">上一章</mt-button>
+            <mt-button size="small">下一章</mt-button>
+          </div>
+      </div>
     </div>
 </template>
 
@@ -32,7 +58,14 @@ export default {
   data () {
     return {
       bookid: this.$route.params.id,
-      popupVisible: false
+      sy_list: '',
+      datashow: false,
+      datahy: false,
+      readbody: '',
+      sourceid: '',
+      link: '',
+      con: '',
+      contitle: ''
     }
   },
   created () {
@@ -42,8 +75,47 @@ export default {
   methods: {
     GetBookSources (bookid) {
       getBookSources(bookid).then(response => {
+        this.sy_list = response
+        this.sourceid = response[0]._id
+        console.log(this.sourceid)
+        this.GetBookChapters(this.sourceid)
         console.log(response)
       })
+    },
+    switchbook () {
+      this.datahy = !this.datahy
+    },
+    Getsource (id) {
+      this.GetBookChapters(id)
+    },
+    GetChapters (link) {
+      getChapters(link).then(response => {
+        console.log(response)
+        if (response.ok) {
+          var datas = response.chapter
+          var content = []
+          content.push({
+            cpContent: datas.isVip
+              ? ['vip章节，请点击换源即可免费阅读']
+              : datas.cpContent ? datas.cpContent.split('\n') : datas.body.split('\n')
+          })
+          this.contitle = datas.title
+          this.con = content[0]
+        }
+      })
+    },
+    GetBookChapters (id) {
+      getBookChapters(id).then(response => {
+        this.link = encodeURIComponent(response.chapters[0].link)
+        this.GetChapters(this.link)
+        console.log(response)
+      })
+    },
+    getback () {
+      this.$router.go(-1)
+    },
+    getshow () {
+      this.datashow = !this.datashow
     }
   }
 }
@@ -51,6 +123,97 @@ export default {
 
 <style lang="less">
     .read-content {
-        height: 600px;
+        overflow-y: auto;
+        z-index: 101;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-color: #c4b395;
+        line-height: 24px;
+        letter-spacing: 2px;
+        .switch-content {
+          position: fixed;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          background-color: rgba(0,0,0,.7);
+          .switch-content-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 80%;
+            max-height: 60%;
+            overflow-y: auto;
+            background-color: #fff;
+            padding: 10px 10px;
+            .sy-list {
+              p {
+                margin: 0;
+              }
+              border-bottom: 1px solid grey;
+            }
+          }
+
+        }
+        .readheader {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          background-color: rgba(0,0,0,.5);
+          height: 35px;
+          padding: 0 6px;
+          p {
+            line-height: 35px;
+            color: #fff;
+            font-size: 12px;
+            margin: 0;
+          }
+          .switch {
+            margin-right: 12px;
+          }
+        }
+        .readbottom {
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          background-color: rgba(0,0,0,.5);
+          .colors {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+          }
+          .bottom-content {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+          }
+          .bottom-content1 {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+          }
+          .bottom-content2 {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+          }
+        }
+        .read-body {
+          padding: 20px 20px;
+          h1 {
+            font-size: 20px;
+            color: #222;
+          }
+          .t-page {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+          }
+        }
     }
 </style>

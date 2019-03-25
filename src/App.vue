@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <!--header -->
-    <mt-header title="Vue-Book">
+    <!-- <mt-header title="Vue-Book">
       <router-link to="/" slot="left">
         <mt-button @click="getback" icon="back">返回</mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
     <div class="vue-content">
       <router-view></router-view>
     </div>
     <!--footer -->
-    <mt-tabbar >
+    <!-- <mt-tabbar >
       <mt-tab-item>
         <router-link to="/home">
           <mt-button>首页</mt-button>
@@ -31,7 +31,7 @@
           <mt-button>排行</mt-button>
         </router-link>
       </mt-tab-item>
-    </mt-tabbar>
+    </mt-tabbar> -->
 
   </div>
 </template>

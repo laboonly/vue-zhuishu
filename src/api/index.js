@@ -66,7 +66,7 @@ export function getBookChapters (id) {
 // 获取章节内容
 export function getChapters (link) {
   return request({
-    url: 'chapters' + link,
+    url: 'chapters/' + link,
     method: 'get'
   })
 }
