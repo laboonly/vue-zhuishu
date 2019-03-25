@@ -10,7 +10,7 @@
             </div>
             <div class="book-read">
                 <button class="jion-button">加入书架</button>
-                <button class="read-button">立即阅读</button>
+                <button class="read-button" @click="read">立即阅读</button>
             </div>
         </div>
         <div class="book-content-two border-gery">
@@ -85,6 +85,7 @@ export default {
     this.GetBookRelated(this.bookid)
     this.Getcomment(this.bookid)
     this.GetreCommend(this.bookid)
+    console.log('bookid:' + this.bookid)
   },
   methods: {
     GetBookRelated (bookid) {
@@ -105,6 +106,9 @@ export default {
         this.commend = response.books
         console.log(response)
       })
+    },
+    read () {
+      this.$router.push({name: 'read', params: { id: this.bookid }})
     }
   }
 }
@@ -257,7 +261,7 @@ export default {
             .recommend-content {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: flex-start;
+                justify-content: space-around;
                 text-align: center;
                 .recommend-card {
                     margin-top: 10px;

@@ -36,9 +36,14 @@ export default new Router({
       component: () => import('@/views/clylist')
     },
     {
-      path: '/book',
+      path: '/book:bookid',
       name: 'book',
       component: () => import('@/views/book')
+    },
+    {
+      path: '/read:id',
+      name: 'read',
+      component: () => import('@/views/read')
     }
   ]
 })

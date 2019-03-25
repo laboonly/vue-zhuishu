@@ -16,6 +16,7 @@ export function getclylist (gender, type, major, minor, start, limit) {
   })
 }
 
+// 获取书籍详情
 export function getBookRelated (id) {
   return request({
     url: 'book-info/' + id,
@@ -30,6 +31,7 @@ export function getBookRelated (id) {
 //   })
 // }
 
+// 获取评论
 export function getcomment (bookid) {
   return request({
     url: 'book/discussions' + `?book=${bookid}`,
@@ -37,9 +39,34 @@ export function getcomment (bookid) {
   })
 }
 
+// 获取推荐
 export function getreCommend (bookid) {
   return request({
     url: 'recommend/' + bookid,
+    method: 'get'
+  })
+}
+
+// 获取书籍源
+export function getBookSources (bookid) {
+  return request({
+    url: 'book-sources?view=summary&book=' + bookid,
+    method: 'get'
+  })
+}
+
+// 获取书籍章节列表
+export function getBookChapters (id) {
+  return request({
+    url: 'book-chapters/' + id,
+    method: 'get'
+  })
+}
+
+// 获取章节内容
+export function getChapters (link) {
+  return request({
+    url: 'chapters' + link,
     method: 'get'
   })
 }
