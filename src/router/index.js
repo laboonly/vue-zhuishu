@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Layout from '@/views/layout'
 
 Vue.use(Router)
 
@@ -7,41 +8,71 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/views/home')
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'home',
+        component: () => import('@/views/home')
+      }]
     },
     {
       path: '/home',
-      name: 'home',
-      component: () => import('@/views/home')
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'home',
+        component: () => import('@/views/home')
+      }]
     },
     {
       path: '/bookcase',
-      name: 'bookcase',
-      component: () => import('@/views/bookcase')
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'bookcase',
+        component: () => import('@/views/bookcase')
+      }]
+
     },
     {
       path: '/class',
-      name: 'class',
-      component: () => import('@/views/class')
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'class',
+        component: () => import('@/views/class')
+      }]
     },
     {
       path: '/rank',
-      name: 'rank',
-      component: () => import('@/views/rank')
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'rank',
+        component: () => import('@/views/rank')
+      }]
+
     },
     {
       path: '/clylist/:major:gender',
-      name: 'clylist',
-      component: () => import('@/views/clylist')
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'clylist',
+        component: () => import('@/views/clylist')
+      }]
     },
     {
       path: '/book:bookid',
-      name: 'book',
-      component: () => import('@/views/book')
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'book',
+        component: () => import('@/views/book')
+      }]
     },
     {
-      path: '/read:id',
+      path: '/read:id:booktitle',
       name: 'read',
       component: () => import('@/views/read')
     }

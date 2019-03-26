@@ -108,7 +108,7 @@ export default {
       })
     },
     read () {
-      this.$router.push({name: 'read', params: { id: this.bookid }})
+      this.$router.push({name: 'read', params: { id: this.bookid, booktitle: this.bookrelated.title }})
     }
   }
 }

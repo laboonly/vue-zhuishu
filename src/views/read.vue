@@ -2,8 +2,8 @@
     <div class="read-content" @click="getshow" >
 
       <div class="readheader" v-if="datashow">
-         <span @click="getback" class="mui-icon mui-icon-arrowleft read-span"></span>
-         <p>圣墟</p>
+         <svg-icon @click="getback" icon-class="back"></svg-icon>
+         <p>{{ booktitle }}</p>
          <p class="switch" @click="switchbook">换源</p>
       </div>
       <div class="readbottom" v-if="datashow">
@@ -25,9 +25,9 @@
           <mt-button size="small">A-</mt-button>
         </div>
         <div class="bottom-content2">
-          <mt-button size="small">上一章</mt-button>
-          <mt-button size="small">目录</mt-button>
-          <mt-button size="small">下一章</mt-button>
+          <mt-button size="small" @click="preChapter">上一章</mt-button>
+          <mt-button size="small" @click="directoryshow = true">目录</mt-button>
+          <mt-button size="small" @click="nextChapter">下一章</mt-button>
         </div>
       </div>
       <div class="switch-content" v-show="datahy" @click="switchbook">
@@ -44,20 +44,28 @@
             <p v-html="item"></p>
           </div>
           <div class="t-page">
-            <mt-button size="small">上一章</mt-button>
-            <mt-button size="small">下一章</mt-button>
+              <p class="t-page-buttom" @click="preChapter">上一章</p>
+              <p class="t-page-buttom" @click="nextChapter"> 下一章</p>
           </div>
       </div>
+      <div v-if="directoryshow">
+          <directory :directoryData="directorydata" :booktitle="booktitle"></directory>
+      </div>
+
     </div>
 </template>
 
 <script>
 import { getBookSources, getBookChapters, getChapters } from '@/api/index'
-
+import directory from '@/components/directory'
 export default {
+  components: {
+    directory
+  },
   data () {
     return {
       bookid: this.$route.params.id,
+      booktitle: this.$route.params.booktitle,
       sy_list: '',
       datashow: false,
       datahy: false,
@@ -65,7 +73,10 @@ export default {
       sourceid: '',
       link: '',
       con: '',
-      contitle: ''
+      contitle: '',
+      nowChapters: 0,
+      directorydata: '',
+      directoryshow: false
     }
   },
   created () {
@@ -73,7 +84,7 @@ export default {
     this.GetBookSources(this.bookid)
   },
   methods: {
-    GetBookSources (bookid) {
+    GetBookSources (bookid) { // 获取书源列表
       getBookSources(bookid).then(response => {
         this.sy_list = response
         this.sourceid = response[0]._id
@@ -104,9 +115,10 @@ export default {
         }
       })
     },
-    GetBookChapters (id) {
+    GetBookChapters (id) { // 根据书源id获取章节列表
       getBookChapters(id).then(response => {
-        this.link = encodeURIComponent(response.chapters[0].link)
+        this.directorydata = response.chapters
+        this.link = encodeURIComponent(response.chapters[this.nowChapters].link)
         this.GetChapters(this.link)
         console.log(response)
       })
@@ -116,6 +128,16 @@ export default {
     },
     getshow () {
       this.datashow = !this.datashow
+    },
+    nextChapter () {
+      this.nowChapters = this.nowChapters + 1
+      this.GetBookChapters(this.sourceid)
+    },
+    preChapter () {
+      if (this.nowChapters >= 0) {
+        this.nowChapters = this.nowChapters - 1
+        this.GetBookChapters(this.sourceid)
+      }
     }
   }
 }
@@ -132,6 +154,14 @@ export default {
         background-color: #c4b395;
         line-height: 24px;
         letter-spacing: 2px;
+        .svg-icon {
+            color: #fff;
+            line-height: 35px;
+            font-size: 24px!important;
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+        }
         .switch-content {
           position: fixed;
           left: 0;
@@ -213,6 +243,15 @@ export default {
             display: flex;
             width: 100%;
             justify-content: space-around;
+            margin-top: 20px;
+            .t-page-buttom {
+                border: 1px solid #ef4f4f;
+                background-color: transparent;
+                color: #ef4f4f;
+                font-size: 14px;
+                border-radius: 4px;
+                padding: 0 12px;
+            }
           }
         }
     }
