@@ -1,7 +1,7 @@
 <template>
     <div class="directory-content">
         <div class="directory-header">
-            <p><svg-icon @click="getback" icon-class="back"></svg-icon>返回</p>
+            <p @click="selectchapter(null)"><svg-icon icon-class="back"></svg-icon>返回</p>
             <p>{{ booktitle }}</p>
         </div>
         <div class="directory-list">
@@ -10,7 +10,7 @@
                 <p @click="reverse">倒叙</p>
             </div>
             <ul >
-                <li v-for="item in directoryData" :key="item.id">{{ item.title }}</li>
+                <li v-for="item in directoryData" @click="selectchapter(item.link)" :key="item.id">{{ item.title }}</li>
             </ul>
         </div>
     </div>
@@ -30,6 +30,9 @@ export default {
   methods: {
     reverse () {
       this.directoryData.reverse()
+    },
+    selectchapter (link) {
+      this.$emit('selectchapter', { 'chapterlink': link })
     }
   }
 }

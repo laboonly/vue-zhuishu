@@ -2,7 +2,9 @@
     <div class="read-content" @click="getshow" >
 
       <div class="readheader" v-if="datashow">
-         <svg-icon @click="getback" icon-class="back"></svg-icon>
+        <div @click="getback">
+            <svg-icon icon-class="back"></svg-icon>
+        </div>
          <p>{{ booktitle }}</p>
          <p class="switch" @click="switchbook">换源</p>
       </div>
@@ -49,7 +51,7 @@
           </div>
       </div>
       <div v-if="directoryshow">
-          <directory :directoryData="directorydata" :booktitle="booktitle"></directory>
+          <directory :directoryData="directorydata" :booktitle="booktitle" v-on:selectchapter="selectChapter"></directory>
       </div>
 
     </div>
@@ -124,6 +126,7 @@ export default {
       })
     },
     getback () {
+      console.log(111)
       this.$router.go(-1)
     },
     getshow () {
@@ -138,6 +141,13 @@ export default {
         this.nowChapters = this.nowChapters - 1
         this.GetBookChapters(this.sourceid)
       }
+    },
+    selectChapter (link) {
+      if (link.chapterlink) {
+        this.link = encodeURIComponent(link.chapterlink)
+        this.GetChapters(this.link)
+      }
+      this.directoryshow = !this.directoryshow
     }
   }
 }
