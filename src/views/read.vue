@@ -60,6 +60,7 @@
 <script>
 import { getBookSources, getBookChapters, getChapters } from '@/api/index'
 import directory from '@/components/directory'
+import { MessageBox } from 'mint-ui'
 export default {
   components: {
     directory
@@ -133,13 +134,20 @@ export default {
       this.datashow = !this.datashow
     },
     nextChapter () {
-      this.nowChapters = this.nowChapters + 1
-      this.GetBookChapters(this.sourceid)
+      let Chapterslength = this.directorydata.length - 1
+      if (this.nowChapters >= Chapterslength) {
+        this.nowChapters = this.nowChapters + 1
+        this.GetBookChapters(this.sourceid)
+      } else {
+        MessageBox.confirm('已经是最后一章了')
+      }
     },
     preChapter () {
-      if (this.nowChapters >= 0) {
+      if (this.nowChapters > 0) {
         this.nowChapters = this.nowChapters - 1
         this.GetBookChapters(this.sourceid)
+      } else {
+        MessageBox.confirm('已经是第一章了')
       }
     },
     selectChapter (link) {

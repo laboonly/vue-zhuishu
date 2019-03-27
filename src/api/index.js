@@ -70,3 +70,12 @@ export function getChapters (link) {
     method: 'get'
   })
 }
+
+// 获取搜索结果
+
+export function getSearch (keyword) {
+  return request({
+    url: 'search?keyword=' + keyword,
+    method: 'get'
+  })
+}

@@ -75,6 +75,16 @@ export default new Router({
       path: '/read:id:booktitle',
       name: 'read',
       component: () => import('@/views/read')
+    },
+    {
+      path: '/search:keyword',
+      component: Layout,
+      children: [{
+        path: '',
+        name: 'search',
+        component: () => import('@/views/search')
+      }]
+
     }
   ]
 })
